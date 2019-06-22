@@ -54,15 +54,6 @@ final dio = Dio()
   ..interceptors.add(CacheInterceptor(logger: Logger("Retry")));
 ```
 
-## Availables stores
-
-| name | description |
-| --- | --- |
-| [MemoryCacheStore](https://pub.dartlang.org/documentation/dio_cache/latest/dio_cache/MemoryCacheStore-class.html) | Stores all cached responses in a map in memory |
-| [FileCacheStore](https://pub.dartlang.org/documentation/dio_cache/latest/dio_cache/FileCacheStore-class.html) | Stores each request in a dedicated file |
-| [BackupCacheStore](https://pub.dartlang.org/documentation/dio_cache/latest/dio_cache/BackupCacheStore-class.html) | Reads values primarly from memory and backup values to specified store (ex: a FileCacheStore) |
-| [FilteredCacheStore](https://pub.dartlang.org/documentation/dio_cache/latest/dio_cache/FilteredCacheStore-class.html) | Ignoring responses for save |
-
 ## Features and bugs
 
 Please file issues.
