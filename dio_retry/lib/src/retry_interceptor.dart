@@ -10,15 +10,15 @@ class RetryInterceptor extends Interceptor {
 
   final Dio dio;
   final Logger logger;
-  final RetryInterceptorRequestExtra options;
+  final RetryOptions options;
 
-  RetryInterceptor({ @required this.dio, this.logger, RetryInterceptorRequestExtra options}) :
-  this.options = options ?? const RetryInterceptorRequestExtra();
+  RetryInterceptor({ @required this.dio, this.logger, RetryOptions options}) :
+  this.options = options ?? const RetryOptions();
   
   @override
   onError(DioError err) async {
 
-    var extra = RetryInterceptorRequestExtra.fromExtra(err.request) ?? this.options;
+    var extra = RetryOptions.fromExtra(err.request) ?? this.options;
 
     if(extra.retries > 0) {
       if(extra.retryInterval.inMilliseconds > 0) {

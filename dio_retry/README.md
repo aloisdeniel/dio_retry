@@ -20,7 +20,7 @@ final dio = Dio()
 ```dart
 final dio = Dio()
   ..interceptors.add(RetryInterceptor(
-    options: const RetryInterceptorRequestExtra(
+    options: const RetryOptions(
       retries: 3, // Number of retries before a failure
       retryInterval: const Duration(seconds: 1), // Interval between each retry
     )
@@ -32,7 +32,7 @@ final dio = Dio()
 
 ```dart
 final response = await dio.get("http://www.flutter.dev", options: Options(
-    extra: RetryInterceptorRequestExtra(
+    extra: RetryOptions(
       retryInterval: const Duration(seconds: 10),
     ).toExtra(),
   ));
@@ -43,7 +43,7 @@ final response = await dio.get("http://www.flutter.dev", options: Options(
 
 ```dart
 final response = await dio.get("http://www.flutter.dev", options: Options(
-    extra: RetryInterceptorRequestExtra.noRetry().toExtra(),
+    extra: RetryOptions.noRetry().toExtra(),
   ));
 ```
 
