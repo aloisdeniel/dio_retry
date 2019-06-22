@@ -15,13 +15,13 @@ final dio = Dio()
   ..interceptors.add(RetryInterceptor());
 ```
 
-#### Global caching options
+#### Global retry options
 
 ```dart
 final dio = Dio()
-  ..interceptors.add(CacheInterceptor(
-    options: const CacheInterceptorRequestExtra(
-        retries: 3, // Number of retries before a failure
+  ..interceptors.add(RetryInterceptor(
+    options: const RetryInterceptorRequestExtra(
+      retries: 3, // Number of retries before a failure
       retryInterval: const Duration(seconds: 1), // Interval between each retry
     )
   )
@@ -51,7 +51,7 @@ final response = await dio.get("http://www.flutter.dev", options: Options(
 
 ```dart
 final dio = Dio()
-  ..interceptors.add(CacheInterceptor(logger: Logger("Retry")));
+  ..interceptors.add(RetryInterceptor(logger: Logger("Retry")));
 ```
 
 ## Features and bugs
