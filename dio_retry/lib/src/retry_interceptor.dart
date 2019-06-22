@@ -17,7 +17,8 @@ class RetryInterceptor extends Interceptor {
   onError(DioError err) async {
     var extra = RetryOptions.fromExtra(err.request) ?? this.options;
 
-    if (extra.retries > 0 && (extra?.retryCondition(err) ?? true)) {
+    var shouldRetry = extra.retries > 0 && (extra.retryEvaluator == null || (await extra.retryEvaluator(err)));
+    if (shouldRetry) {
       if (extra.retryInterval.inMilliseconds > 0) {
         await Future.delayed(extra.retryInterval);
       }

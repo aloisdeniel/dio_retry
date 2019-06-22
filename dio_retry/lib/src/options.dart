@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-typedef bool RetryCondition(DioError error);
+typedef Future<bool> RetryEvaluator(DioError error);
 
 class RetryOptions {
   /// The number of retry in case of an error
@@ -10,11 +10,11 @@ class RetryOptions {
   final Duration retryInterval;
 
   /// Evaluating if a retry is necessary.regarding the error
-  final RetryCondition retryCondition;
+  final RetryEvaluator retryEvaluator;
 
   const RetryOptions(
       {this.retries = 3,
-      this.retryCondition,
+      this.retryEvaluator,
       this.retryInterval = const Duration(seconds: 1)})
       : assert(retries != null),
         assert(retryInterval != null);
