@@ -23,6 +23,7 @@ final dio = Dio()
     options: const RetryOptions(
       retries: 3, // Number of retries before a failure
       retryInterval: const Duration(seconds: 1), // Interval between each retry
+      retryCondition: (error) => true, // Evaluating if a retry is necessary.regarding the error
     )
   )
 );

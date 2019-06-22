@@ -1,14 +1,21 @@
 import 'package:dio/dio.dart';
 
+typedef bool RetryCondition(DioError error);
+
 class RetryOptions {
   /// The number of retry in case of an error
   final int retries;
 
-  // The interval before a retry.
+  /// The interval before a retry.
   final Duration retryInterval;
 
+  /// Evaluating if a retry is necessary.regarding the error
+  final RetryCondition retryCondition;
+
   const RetryOptions(
-      {this.retries = 3, this.retryInterval = const Duration(seconds: 1)})
+      {this.retries = 3,
+      this.retryCondition,
+      this.retryInterval = const Duration(seconds: 1)})
       : assert(retries != null),
         assert(retryInterval != null);
 
@@ -24,13 +31,14 @@ class RetryOptions {
     return request.extra[extraKey];
   }
 
-  RetryOptions copyWith({ 
+  RetryOptions copyWith({
     int retries,
     Duration retryInterval,
-  }) => RetryOptions(
-    retries: retries ?? this.retries,
-    retryInterval: retryInterval ?? this.retryInterval,
-  );
+  }) =>
+      RetryOptions(
+        retries: retries ?? this.retries,
+        retryInterval: retryInterval ?? this.retryInterval,
+      );
 
   Map<String, dynamic> toExtra() {
     return {
