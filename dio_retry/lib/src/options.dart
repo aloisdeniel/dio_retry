@@ -62,4 +62,18 @@ class RetryOptions {
       extraKey: this,
     };
   }
+
+  Options toOptions() {
+    return Options(
+      extra: this.toExtra()
+    );
+  }
+
+  Options mergeIn(Options options) {
+    return options.merge(
+      extra: <String,dynamic>{}
+        ..addAll(options.extra ?? {})
+        ..addAll(this.toExtra())
+    );
+  }
 }
