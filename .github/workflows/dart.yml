@@ -1,0 +1,20 @@
+name: Publish Dart Package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    container:
+      image:  google/dart:latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Publish Dart/Flutter package
+      uses: sakebook/actions-flutter-pub-publisher@v1.1.0
+      with:
+        credential: ${{ secrets.PUB_CREDENTIAL_JSON }}
+        flutter_package: false
+        skip_test: false
