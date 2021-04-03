@@ -41,7 +41,7 @@ class RetryOptions {
   /// Returns [true] only if the response hasn't been cancelled or got
   /// a bas status code.
   static FutureOr<bool> defaultRetryEvaluator(DioError error) {
-    return error.type != DioErrorType.CANCEL && error.type != DioErrorType.RESPONSE;
+    return error.type != DioErrorType.cancel && error.type != DioErrorType.response;
   }
 
   factory RetryOptions.fromExtra(RequestOptions request) {
@@ -70,7 +70,7 @@ class RetryOptions {
   }
 
   Options mergeIn(Options options) {
-    return options.merge(
+    return options.copyWith(
       extra: <String,dynamic>{}
         ..addAll(options.extra ?? {})
         ..addAll(this.toExtra())

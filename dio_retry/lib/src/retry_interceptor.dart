@@ -14,8 +14,8 @@ class RetryInterceptor extends Interceptor {
       : this.options = options ?? const RetryOptions();
 
   @override
-  onError(DioError err) async {
-    var extra = RetryOptions.fromExtra(err.request) ?? this.options;
+  Future  onError(DioError err, ErrorInterceptorHandler handler) async {
+    var extra = RetryOptions.fromExtra(err.requestOptions) ?? this.options;
 
     var shouldRetry = extra.retries > 0 && await extra.retryEvaluator(err);
     if (shouldRetry) {
@@ -25,26 +25,26 @@ class RetryInterceptor extends Interceptor {
 
       // Update options to decrease retry count before new try
       extra = extra.copyWith(retries: extra.retries - 1);
-      err.request.extra = err.request.extra..addAll(extra.toExtra());
+      err.requestOptions.extra = err.requestOptions.extra..addAll(extra.toExtra());
 
       try {
         logger?.warning(
-            "[${err.request.uri}] An error occured during request, trying a again (remaining tries: ${extra.retries}, error: ${err.error})");
+            "[${err.requestOptions.uri}] An error occured during request, trying a again (remaining tries: ${extra.retries}, error: ${err.error})");
         // We retry with the updated options
-        return await this.dio.request(
-              err.request.path,
-              cancelToken: err.request.cancelToken,
-              data: err.request.data,
-              onReceiveProgress: err.request.onReceiveProgress,
-              onSendProgress: err.request.onSendProgress,
-              queryParameters: err.request.queryParameters,
-              options: err.request,
-            );
+       return await this.dio.request(
+          err.requestOptions.path,
+          cancelToken: err.requestOptions.cancelToken,
+          data: err.requestOptions.data,
+          onReceiveProgress: err.requestOptions.onReceiveProgress,
+          onSendProgress: err.requestOptions.onSendProgress,
+          queryParameters: err.requestOptions.queryParameters,
+          options: extra.toOptions()
+        );
       } catch (e) {
         return e;
       }
     }
 
-    return super.onError(err);
+    return super.onError(err, handler);
   }
 }
