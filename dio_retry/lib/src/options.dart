@@ -1,5 +1,27 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart';
+
+extension RequestOptionsExtensions on RequestOptions {
+  Options toOptions() {
+    return Options(
+      method: method,
+      sendTimeout: sendTimeout,
+      receiveTimeout: receiveTimeout,
+      extra: extra,
+      headers: headers,
+      responseType: responseType,
+      contentType: contentType,
+      validateStatus: validateStatus,
+      receiveDataWhenStatusError: receiveDataWhenStatusError,
+      followRedirects: followRedirects,
+      maxRedirects: maxRedirects,
+      requestEncoder: requestEncoder,
+      responseDecoder: responseDecoder,
+      listFormat: listFormat,
+    );
+  }
+}
 
 typedef RetryEvaluator = FutureOr<bool> Function(DioError error);
 
